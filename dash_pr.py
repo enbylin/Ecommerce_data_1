@@ -5,8 +5,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output
-from csv_read import month_sum_data, year_data, year_sum_data, year_sum_cate_data, year_sum_sex_data,\
-    year_sum_payment_data, year_sum_geo_data, order_df_weekday_hour, order_df_top10_sum, order_df_top10_cnt, mem_df
+from csv_read import *
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -17,7 +16,8 @@ year_sum_bar_chart = px.bar(
     data_frame=year_data, x='연도', y='매출액', text='매출액',
     opacity=0.8,
     orientation='v',
-    barmode='relative'
+    barmode='relative',
+    template='plotly_white'
 )
 year_sum_bar_chart.update_layout(
     xaxis=dict({
@@ -36,7 +36,8 @@ year_cnt_bar_chart = px.bar(
     data_frame=year_data, x='연도', y='결제건수', text='결제건수',
     opacity=0.8,
     orientation='v',
-    barmode='relative'
+    barmode='relative',
+    template='plotly_white'
 )
 year_cnt_bar_chart.update_layout(
     xaxis=dict({
@@ -53,7 +54,7 @@ year_cnt_bar_chart.update_layout(
 # 월별 매출액 합계 그래프
 month_sum_data_chart = px.line(
     data_frame=month_sum_data, x='주문날짜', y='결제금액',
-    line_shape='spline', orientation='v', width=1500, template='simple_white'
+    line_shape='spline', orientation='v', width=1500, template='plotly_white'
 
 )
 month_sum_data_chart.update_layout(
@@ -88,13 +89,14 @@ fig_heatmap.update_layout(
             'text': '<b>요일/시간대별 판매(건수) 빈도</b>',
             'font_size': 20,
             'x': 0.5, 'y': 0.9
-    }), height=600, template='simple_white'
+    }), height=600, template='plotly_white'
 )
 
 top10_sum_bar_chart = px.bar(
     data_frame=order_df_top10_sum, x='상품명', y='결제금액', text='결제금액',
     opacity=0.8,
-    orientation='v'
+    orientation='v',
+    template='plotly_white'
 )
 top10_sum_bar_chart.update_layout(
     title=dict({
@@ -107,7 +109,8 @@ top10_sum_bar_chart.update_layout(
 top10_cnt_bar_chart = px.bar(
     data_frame=order_df_top10_cnt, x='주소', y='결제건수', text='결제건수',
     opacity=0.8,
-    orientation='v'
+    orientation='v',
+    template='plotly_white'
 )
 top10_cnt_bar_chart.update_layout(
     title=dict({
@@ -119,7 +122,7 @@ top10_cnt_bar_chart.update_layout(
 
 mem_bar_chart = px.line(
     data_frame=mem_df, x='가입일', y='가입회원수',
-    line_shape='spline', orientation='v', width=1500, template='simple_white'
+    line_shape='spline', orientation='v', width=1500, template='plotly_white'
 )
 mem_bar_chart.update_layout(
     title=dict({
@@ -184,7 +187,6 @@ app.layout = html.Div([
                 id='dropdown_graph_4',
                 style={'display': 'inline-block', 'width': '100%'}
             )
-
         ]),
         dcc.Tab(label='상세 분석', children=[
             
@@ -202,7 +204,6 @@ app.layout = html.Div([
                 figure=fig_heatmap,
                 style={'display': 'inline-block', 'width': '80%'}
             ),
-
         ])
     ])
 ], style={'display': 'block', 'width': '100%', 'textAlign': 'center', 'margin': 'auto auto'})
@@ -224,7 +225,8 @@ def update_graph(value):
                 data_frame=year_sum_cate_data[cond], x='연도', y='결제금액', text='결제금액',
                 opacity=0.8,
                 orientation='v',
-                barmode='relative'
+                barmode='relative',
+                template='plotly_white'
             )
     figure_bar_1.update_layout(
            xaxis=dict({
@@ -239,7 +241,7 @@ def update_graph(value):
     )
     figure_pie_1 = px.pie(
         data_frame=year_sum_sex_data[cond_pie], names='성별', values='결제금액', color='성별',
-        opacity=0.8
+        opacity=0.8, template='plotly_white'
     )
     figure_pie_1.update_layout(
         title=dict({
@@ -264,7 +266,7 @@ def update_graph(value):
     figure_geo_1 = px.scatter_mapbox(
         data_frame=year_sum_geo_data[cond_geo], lat='위도', lon='경도', size='결제금액', color='결제금액',
         opacity=0.8, mapbox_style='open-street-map', size_max=15, zoom=6,
-        color_continuous_scale=px.colors.cyclical.IceFire, width=700, height=700
+        color_continuous_scale=px.colors.cyclical.IceFire, width=700, height=700, template='plotly_white'
     )
     figure_geo_1.update_layout(
         title=dict({
