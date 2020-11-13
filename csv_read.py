@@ -2,10 +2,17 @@ import pandas as pd
 import datetime
 from datetime import datetime
 
-# 파일 읽기
-order_df = pd.read_csv('./data/order_df_final.csv', encoding='utf-8-sig')
-geo_df = pd.read_csv('./data/geo.csv', encoding='utf-8-sig')
-mem_df = pd.read_csv('./data/member_final.csv', encoding='utf-8-sig')
+# 파일 읽기 함수
+def read_file(path, format):
+    if format == 'csv':
+        read_df = pd.read_csv(path, encoding='utf-8-sig')
+        return read_df
+
+order_df = read_file('./data/order_df_final.csv', 'csv')
+geo_df = read_file('./data/geo.csv', 'csv')
+mem_df = read_file('./data/member_final.csv', 'csv')
+
+
 
 # 날짜 형태 컬럼 데이터 타입 변경
 order_df['주문날짜'] = pd.to_datetime(order_df['주문날짜'], format='%Y-%m-%d %H:%M:%S', errors='raise')
