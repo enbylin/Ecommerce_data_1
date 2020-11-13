@@ -1,16 +1,21 @@
 import pandas as pd
 import datetime
 from datetime import datetime
+from ip_check import check_ip
 
 # 파일 읽기 함수
 def read_file(path, format):
     if format == 'csv':
-        read_df = pd.read_csv(path, encoding='utf-8-sig')
-        return read_df
+        if check_ip == '172.30.1.3':
+            read_df = pd.read_csv('Ecommerce_data_1'+ path, encoding='utf-8-sig')
+            return read_df
+        else:
+            read_df = pd.read_csv('.'+ path, encoding='utf-8-sig')
+            return read_df
 
-order_df = read_file('./data/order_df_final.csv', 'csv')
-geo_df = read_file('./data/geo.csv', 'csv')
-mem_df = read_file('./data/member_final.csv', 'csv')
+order_df = read_file('/data/order_df_final.csv', 'csv')
+geo_df = read_file('/data/geo.csv', 'csv')
+mem_df = read_file('/data/member_final.csv', 'csv')
 
 
 

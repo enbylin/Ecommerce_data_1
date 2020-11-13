@@ -5,7 +5,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output
-from csv_read import *
+from read_file import *
+from ip_check import check_ip
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -122,7 +123,7 @@ top10_cnt_bar_chart.update_layout(
 
 mem_bar_chart = px.line(
     data_frame=mem_df, x='가입일', y='가입회원수',
-    line_shape='spline', orientation='v', width=1500, template='plotly_white'
+    line_shape='spline', orientation='v', template='plotly_white'
 )
 mem_bar_chart.update_layout(
     title=dict({
@@ -279,4 +280,7 @@ def update_graph(value):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host='localhost')
+    if check_ip == '172.30.1.3':
+        app.run_server(debug=True, host=check_ip, port=8051)
+    else:
+        app.run_server(debug=True, host='localhost', port=8051)
